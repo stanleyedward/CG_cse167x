@@ -95,18 +95,32 @@ mat4 Transform::perspective(float fovy, float aspect, float zNear, float zFar)
 
 mat4 Transform::scale(const float &sx, const float &sy, const float &sz) 
 {
-  mat4 ret;
+  mat4 scaling_matrix;
   // YOUR CODE FOR HW2 HERE
   // Implement scaling 
-  return ret;
+  scaling_matrix = mat4(
+    sx, 0.0, 0.0, 0.0,
+    0.0, sy, 0.0, 0.0,
+    0.0, 0.0, sz, 0.0,
+    0.0, 0.0, 0.0, 1.0
+  ); scaling_matrix = glm::transpose(scaling_matrix);
+
+  return scaling_matrix;
 }
 
 mat4 Transform::translate(const float &tx, const float &ty, const float &tz) 
 {
-  mat4 ret;
+  mat4 translation_matrix;
   // YOUR CODE FOR HW2 HERE
   // Implement translation 
-  return ret;
+  translation_matrix = mat4(
+    1.0, 0.0, 0.0, tx,
+    0.0, 1.0, 0.0, ty,
+    0.0, 0.0, 1.0, tz,
+    0.0, 0.0, 0.0, 1.0
+  );translation_matrix = glm::transpose(translation_matrix);
+
+  return translation_matrix;
 }
 
 // To normalize the up direction and construct a coordinate frame.  
