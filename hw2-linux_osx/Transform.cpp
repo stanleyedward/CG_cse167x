@@ -9,30 +9,71 @@
 // Helper rotation function.  Please implement this.  
 mat3 Transform::rotate(const float degrees, const vec3& axis) 
 {
-  mat3 ret;
+  mat3 rotation_matrix;
   // YOUR CODE FOR HW2 HERE
   // Please implement this.  Likely the same as in HW 1.  
-  return ret;
+
+  mat3 Identity = glm::mat3(1.0);
+
+  mat3 Aat = glm::mat3(
+    axis.x * axis.x, axis.x * axis.y, axis.x * axis.z,
+		axis.y * axis.x, axis.y * axis.y, axis.y * axis.z,
+		axis.z * axis.x, axis.z * axis.y, axis.z * axis.z
+  );
+
+  mat3 A_star = glm::mat3(
+    0., axis.z, -axis.y, 
+		-axis.z, 0., axis.x,
+		 axis.y, -axis.x, 0.
+  );
+
+  float radians = degrees * (pi/180.0);
+  float cos_angle = glm::cos(radians);
+  float sin_angle = glm::sin(radians);
+  mat3 rotation_matrix = glm::mat3(cos_angle*Identity + (1.f - cos_angle*Aat) + sin_angle*A_star);
+
+  return rotation_matrix;
 }
 
 void Transform::left(float degrees, vec3& eye, vec3& up) 
 {
   // YOUR CODE FOR HW2 HERE
   // Likely the same as in HW 1.  
+  mat3 rotation = rotate(degrees, up);
+  eye = rotation * eye;
+
 }
 
 void Transform::up(float degrees, vec3& eye, vec3& up) 
 {
   // YOUR CODE FOR HW2 HERE 
-  // Likely the same as in HW 1.  
+  // Likely the same as in HW 1. 
+  vec3 eye_up_cross = glm::cross(eye, up);
+  vec3 rotation_axis = glm::normalize(eye_up_cross);
+  mat3 rotation = rotate(degrees, rotation_axis);
+  eye = rotation * eye;
+  vec3 rotation_axis_eye_cross = glm::cross(rotation_axis, eye);
+  up = glm::normalize(rotation_axis_eye_cross);
+
+
 }
 
 mat4 Transform::lookAt(const vec3 &eye, const vec3 &center, const vec3 &up) 
 {
-  mat4 ret;
+  mat4 lookat_matrix;
   // YOUR CODE FOR HW2 HERE
   // Likely the same as in HW 1.  
-  return ret;
+  vec3 w = glm::normalize(eye);
+  vec3 u = glm::normalize(glm::cross(up, w));
+  vec3 v = glm::cross(w,u);
+
+  lookat_matrix = glm::mat4(
+		u.x, v.x, w.x, 0., 
+		u.y, v.y, w.y, 0., 
+		u.z, v.z, w.z, 0., 
+		-glm::dot(u, eye), -glm::dot(v, eye), -glm::dot(w, eye), 1.);
+
+  return lookat_matrix;
 }
 
 mat4 Transform::perspective(float fovy, float aspect, float zNear, float zFar)
