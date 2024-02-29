@@ -30,7 +30,7 @@ mat3 Transform::rotate(const float degrees, const vec3& axis)
   float radians = degrees * (pi/180.0);
   float cos_angle = glm::cos(radians);
   float sin_angle = glm::sin(radians);
-  mat3 rotation_matrix = glm::mat3(cos_angle*Identity + (1.f - cos_angle*Aat) + sin_angle*A_star);
+  rotation_matrix = glm::mat3(cos_angle*Identity + (1.f - cos_angle*Aat) + sin_angle*A_star);
 
   return rotation_matrix;
 }
