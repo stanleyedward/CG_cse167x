@@ -51,10 +51,10 @@ void Transform::up(float degrees, vec3& eye, vec3& up)
   vec3 eye_up_cross = glm::cross(eye, up);
   vec3 rotation_axis = glm::normalize(eye_up_cross);
   mat3 rotation = rotate(degrees, rotation_axis);
-  eye = rotation * eye;
   vec3 rotation_axis_eye_cross = glm::cross(rotation_axis, eye);
-  up = glm::normalize(rotation_axis_eye_cross);
 
+  eye = rotation * eye;
+  up = glm::normalize(rotation_axis_eye_cross);
 
 }
 
@@ -78,26 +78,55 @@ mat4 Transform::lookAt(const vec3 &eye, const vec3 &center, const vec3 &up)
 
 mat4 Transform::perspective(float fovy, float aspect, float zNear, float zFar)
 {
-  mat4 ret;
+  mat4 perspective_matrix;
   // YOUR CODE FOR HW2 HERE
   // New, to implement the perspective transform as well.  
-  return ret;
+  float theta = fovy/2.0;
+  float d = cos(theta)/ sin(theta);
+
+  float A = -(zFar+zNear)/(zFar - zNear);
+  float B = -(2*zFar*zNear)/(zFar-zNear);
+
+
+ perspective_matrix = glm::mat4(
+  d/aspect, 0.0, 0.0, 0.0,
+  0.0, d, 0.0, 0.0,
+  0.0, 0.0, A, B,
+  0.0, 0.0, -1.0, 0.0
+ ); perspective_matrix = glm::transpose(perspective_matrix);
+
+  return perspective_matrix;
 }
 
 mat4 Transform::scale(const float &sx, const float &sy, const float &sz) 
 {
-  mat4 ret;
+  mat4 scaling_matrix;
   // YOUR CODE FOR HW2 HERE
   // Implement scaling 
-  return ret;
+  scaling_matrix = mat4(
+    sx, 0.0, 0.0, 0.0,
+    0.0, sy, 0.0, 0.0,
+    0.0, 0.0, sz, 0.0,
+    0.0, 0.0, 0.0, 1.0
+  ); scaling_matrix = glm::transpose(scaling_matrix);
+
+  return scaling_matrix;
 }
+
 
 mat4 Transform::translate(const float &tx, const float &ty, const float &tz) 
 {
-  mat4 ret;
+  mat4 translation_matrix;
   // YOUR CODE FOR HW2 HERE
   // Implement translation 
-  return ret;
+  translation_matrix = mat4(
+    1.0, 0.0, 0.0, tx,
+    0.0, 1.0, 0.0, ty,
+    0.0, 0.0, 1.0, tz,
+    0.0, 0.0, 0.0, 1.0
+  );translation_matrix = glm::transpose(translation_matrix);
+
+  return translation_matrix;
 }
 
 // To normalize the up direction and construct a coordinate frame.  
