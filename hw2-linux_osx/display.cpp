@@ -45,7 +45,7 @@ void transformvec (const GLfloat input[4], GLfloat output[4])
 
 void display() 
 {
-  glClearColor(0, 0, 1, 0);
+  glClearColor(1, 0, 0, 0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Either use the built-in lookAt function or the lookAt implemented by the user.
@@ -86,7 +86,7 @@ void display()
   // The object draw functions will need to further modify the top of the stack,
   // so assign whatever transformation matrix you intend to work with to modelview
   // rather than use a uniform variable for that.
-  modelview = transf;
+  // modelview = transf;
 
   for (int i = 0 ; i < numobjects ; i++) {
     object* obj = &(objects[i]); // Grabs an object struct.
