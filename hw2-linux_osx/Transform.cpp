@@ -9,7 +9,6 @@
 // Helper rotation function.  Please implement this.  
 mat3 Transform::rotate(const float degrees, const vec3& axis) 
 {
-  mat3 ret;
   // YOUR CODE FOR HW2 HERE
   // Please implement this.  Likely the same as in HW 1. 
   mat3 Identity = glm::mat3(1.0);
@@ -34,7 +33,6 @@ mat3 Transform::rotate(const float degrees, const vec3& axis)
 	mat3 Rotation = glm::mat3(cos_angle*Identity + (1.f-cos_angle)*Axis_Axis_T + sin_angle*A_star);
 
 	return Rotation; 
-  return ret;
 }
 
 void Transform::left(float degrees, vec3& eye, vec3& up) 
