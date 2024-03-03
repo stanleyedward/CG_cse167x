@@ -34,6 +34,19 @@ uniform vec4 specular;
 uniform vec4 emission; 
 uniform float shininess; 
 
+vec4 ComputeLight (const in vec3 direction, const in vec4 lightcolor, const in vec3 normal, 
+const in vec3 halfvec, const in vec4 mydiffuse, const in vec4 myspecular, const in float myshininess) {
+
+        float nDotL = dot(normal, direction)  ;         
+        vec4 lambert = mydiffuse * lightcolor * max (nDotL, 0.0) ;  
+
+        float nDotH = dot(normal, halfvec) ; 
+        vec4 phong = myspecular * lightcolor * pow (max(nDotH, 0.0), myshininess) ; 
+
+        vec4 retval = lambert + phong ; 
+        return retval ;            
+}  
+
 void main (void) 
 {       
     if (enablelighting) {       
