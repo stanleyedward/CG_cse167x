@@ -260,6 +260,8 @@ void readfile(const char* filename)
             // See how the stack is affected, as above.  
             // Note that rotate returns a mat3. 
             // Also keep in mind what order your matrix is!
+            vec3 axis = vec3(values[0], values[1], values[3]);
+            *(&transfstack.top()) = transfstack.top() * mat4(Transform::rotate(values[3], axis));
 
           }
         }
