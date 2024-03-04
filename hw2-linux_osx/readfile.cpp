@@ -233,7 +233,7 @@ void readfile(const char* filename)
             // Think about how the transformation stack is affected
             // You might want to use helper functions on top of file. 
             // Also keep in mind what order your matrix is!
-            *(&transfstack.top()) = transfstack.top() * Transform::translate(values[0], values[1], values[3]);
+            *(&transfstack.top()) = transfstack.top() * Transform::translate(values[0], values[1], values[2]);
 
           }
         }
@@ -245,7 +245,7 @@ void readfile(const char* filename)
             // Think about how the transformation stack is affected
             // You might want to use helper functions on top of file.  
             // Also keep in mind what order your matrix is!
-            *(&transfstack.top()) = transfstack.top() * Transform::scale(values[0], values[1], values[3]);
+            *(&transfstack.top()) = transfstack.top() * Transform::scale(values[0], values[1], values[2]);
 
 
           }
