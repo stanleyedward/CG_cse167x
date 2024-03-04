@@ -111,6 +111,10 @@ void readfile(const char* filename)
               // Note that values[0...7] shows the read in values 
               // Make use of lightposn[] and lightcolor[] arrays in variables.h
               // Those arrays can then be used in display too.  
+              for(i = 0; i<4; i++){
+                lightposn[i+4*numused] = values[i];
+                lightcolor[i+4*numused] = values[i+4];
+              }
 
               ++numused; 
             }
@@ -170,6 +174,16 @@ void readfile(const char* filename)
             // You may need to use the upvector fn in Transform.cpp
             // to set up correctly. 
             // Set eyeinit upinit center fovy in variables.h 
+            vec3 lookfrom = vec3(values[0],values[1],values[2]);
+            vec3 lookat = vec3(values[3],values[4],values[5]);
+            
+            center = lookat;
+            eyeinit = lookfrom;
+            
+            vec3 eye_direction = lookat - lookfrom;
+            upinit = glm::normalize(vec3(values[6], values[7], values[8]));
+            upinit = Transform::upvector(upinit, eye_direction);
+            fovy = values[9];
 
           }
         }
@@ -219,6 +233,7 @@ void readfile(const char* filename)
             // Think about how the transformation stack is affected
             // You might want to use helper functions on top of file. 
             // Also keep in mind what order your matrix is!
+            *(&transfstack.top()) = transfstack.top() * Transform::translate(values[0], values[1], values[3]);
 
           }
         }
@@ -230,6 +245,8 @@ void readfile(const char* filename)
             // Think about how the transformation stack is affected
             // You might want to use helper functions on top of file.  
             // Also keep in mind what order your matrix is!
+            *(&transfstack.top()) = transfstack.top() * Transform::scale(values[0], values[1], values[3]);
+
 
           }
         }
