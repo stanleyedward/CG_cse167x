@@ -68,6 +68,14 @@ void display()
     // The lightransf[] array in variables.h and transformvec() might also be useful here.
     // Remember that light positions must be transformed by modelview.  
 
+    glUniform1i(numusedcol,numused);
+    for(int i=0; i<numused; i++){
+      transformvec(&lightposn[i*4], &lightransf[i*4]);
+    }
+
+    glUniform4fv(lightpos, numused, lightransf);
+    glUniform4fv(lightcol, numused, lightcolor);
+
   } else {
     glUniform1i(enablelighting,false); 
   }
@@ -86,7 +94,7 @@ void display()
   // The object draw functions will need to further modify the top of the stack,
   // so assign whatever transformation matrix you intend to work with to modelview
   // rather than use a uniform variable for that.
-  modelview = modelview  * sc * tr;
+  transf = modelview  * sc * tr;
 
   for (int i = 0 ; i < numobjects ; i++) {
     object* obj = &(objects[i]); // Grabs an object struct.
@@ -95,6 +103,13 @@ void display()
     // Set up the object transformations 
     // And pass in the appropriate material properties
     // Again glUniform() related functions will be useful
+
+    glLoadMatrixf(&transf[0][0]);
+
+    glUniform4fv(ambientcol,1,obj->ambient);
+    glUniform4fv(diffusecol,1,obj->diffuse);
+    glUniform4fv(specularcol,1,obj->specular);
+    glUniform1fv(shininesscol,1,&obj->shininess);
 
 
     // Actually draw the object
