@@ -94,7 +94,7 @@ void display()
   // The object draw functions will need to further modify the top of the stack,
   // so assign whatever transformation matrix you intend to work with to modelview
   // rather than use a uniform variable for that.
-  transf = modelview  * sc * tr;
+  transf = modelview  * tr * sc;
 
   for (int i = 0 ; i < numobjects ; i++) {
     object* obj = &(objects[i]); // Grabs an object struct.
@@ -104,6 +104,7 @@ void display()
     // And pass in the appropriate material properties
     // Again glUniform() related functions will be useful
 
+    transf = modelview * tr * sc * obj->transform;
     glLoadMatrixf(&transf[0][0]);
 
     glUniform4fv(ambientcol,1,obj->ambient);
